@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Container } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
 import MdlLogin from "../component/home/mdlLogin";
 import MdlRegister from "../component/home/mdlRegister";
 import Content from "../component/home/content";
@@ -15,7 +14,8 @@ class Home extends Component {
   }
 
   render() {
-    const { dataUser, isLoading, error } = this.props.dataUser;
+    // const { dataUser, isLoading, error } = this.props.dataUser;
+    const { dataUser } = this.props.dataUser;
     // console.log("dataUser => ", dataUser.length );
 
     if (dataUser.length > 0) {
@@ -26,9 +26,9 @@ class Home extends Component {
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light bg-shadow">
           <Container>
-            <a className="navbar-brand" href="#">
+            <div className="navbar-brand">
               <h1 className="clr">E-Tiket</h1>
-            </a>
+            </div>
 
             <form className="form-inline my-2 my-lg-0">
               <MdlRegister />

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BaseUrl, headerAutorization } from "../config/API";
+import { BaseUrl } from "../config/API";
 // headerAutorization
 
 export const type = () => {

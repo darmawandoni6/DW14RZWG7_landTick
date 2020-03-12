@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  Container,
-  Navbar,
-  Form,
-  Dropdown,
-  DropdownButton
-} from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { cekUser } from "../_action/user";
@@ -22,12 +16,12 @@ class Admin extends Component {
   };
 
   render() {
-    const { dataUser, isLoading, error } = this.props.dataUser;
+    const { dataUser, error } = this.props.dataUser;
     if (error) {
       window.location.href = "http://localhost:3000/";
     }
 
-    if (dataUser.length != 0) {
+    if (dataUser.length !== 0) {
       if (!dataUser.status) {
         window.location.href = "http://localhost:3000/beranda";
       }
@@ -37,13 +31,16 @@ class Admin extends Component {
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light bg-shadow">
           <Container>
-            <a className="navbar-brand" href="#">
-              <h1 className="clr">E-Tiket</h1>
-            </a>
+            <div className="navbar-brand">
+              <Link to="/admin">
+                {" "}
+                <h1 className="clr">E-Tiket</h1>
+              </Link>
+            </div>
             <form className="form-inline my-2 my-lg-0">
               <div className="dropdown">
                 <div className="bulet ">
-                  <Link to="/admin">{dataUser.name} &nbsp;</Link>
+                  {dataUser.name} &nbsp;
                   <i className="fa fa-user fa-sm" />
                 </div>
                 <div className="childDrop">

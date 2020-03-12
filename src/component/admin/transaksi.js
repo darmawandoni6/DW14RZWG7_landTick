@@ -3,6 +3,7 @@ import { Container, Row, Col, Table } from "react-bootstrap";
 import Admin from "../../pages/admin";
 import Search from "./mdlSearch";
 import Edit from "./mdlEdit";
+import Delete from "./mdlDelete";
 
 import { connect } from "react-redux";
 import { getAllorder } from "../../_action/order";
@@ -13,9 +14,7 @@ class Transaksi extends Component {
   }
 
   render() {
-    const { dataOrder, isLoading, error } = this.props.list;
-    console.log(dataOrder);
-
+    const { dataOrder, isLoading } = this.props.list;
     if (isLoading) {
       return <div>Loading</div>;
     }
@@ -47,19 +46,17 @@ class Transaksi extends Component {
                   <td>{data.keretum.name_train}</td>
                   <td>{data.payment.attachment}</td>
 
-                  <td>{data.payment.status}</td>
+                  <td className={data.payment.status}>{data.payment.status}</td>
                   <td>
                     <Row>
                       <Col>
-                        <Search id={data.payment.id} />
+                        <Search data={data} />
                       </Col>
                       <Col>
-                        <Edit id={data.payment.id} />
+                        <Edit data={data} />
                       </Col>
                       <Col>
-                        <div className="font-style">
-                          <i className="fa fa-trash e"></i>
-                        </div>
+                        <Delete data={data} />
                       </Col>
                     </Row>
                   </td>

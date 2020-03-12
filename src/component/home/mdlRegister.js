@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Modal, Row, Form } from "react-bootstrap";
-import Axios from "axios";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { register } from "../../_action/user";
@@ -39,7 +38,7 @@ class MdlRegister extends Component {
     e.preventDefault();
     this.validate();
     let err = false;
-    if (this.state.errPass == "") err = false;
+    if (this.state.errPass.length === "") err = false;
     else err = true;
     const data = {
       name: this.state.name,
@@ -50,15 +49,12 @@ class MdlRegister extends Component {
       phone: this.state.phone,
       address: this.state.address
     };
-    // if(err ==)
+    if (!err) this.props.register(data);
   };
-  // this.props.register(data);
 
   validate() {
     let vpass = "";
-    console.log(this.state.password.length);
-
-    if (!this.state.password.length < 6) {
+    if (this.state.password.length < 6) {
       vpass = "The password must be more than 6 digits long";
     }
     this.setState({
@@ -68,7 +64,7 @@ class MdlRegister extends Component {
 
   render() {
     const { dataUser } = this.props.data;
-    console.log("data user => ", dataUser);
+    // console.log("data user => ", dataUser);
     if (dataUser) {
       if (dataUser.msg === "success") {
         localStorage.setItem("token", dataUser.token);
@@ -175,7 +171,7 @@ class MdlRegister extends Component {
                 </Form.Group>
                 <br />
                 <Button variant="primary" type="submit">
-                  Login
+                  Register
                 </Button>
               </Form>
             </Row>

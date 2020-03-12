@@ -6,7 +6,6 @@ import {
   Jumbotron,
   Form,
   Card,
-  Table,
   Button
 } from "react-bootstrap";
 
@@ -27,21 +26,35 @@ class Content extends Component {
   }
 
   componentDidMount() {
-    this.props.getAlltiket();
+    console.log("ambil", this.getTgl());
+
+    this.props.getAlltiket(this.getTgl());
   }
   changeSearch = () => {
     this.setState({
       change: !this.state.change
     });
   };
-
-  // buyTiket = () => {
-  //   this.buyTiket2(e);
-  // };
-
   buyTiket2 = e => {
     alert(e.target.value);
   };
+
+  getTgl() {
+    let tgl = new Date();
+
+    let hari = tgl.getDate();
+    if (hari < 10) hari = "0" + hari;
+
+    let bulan = tgl.getMonth() + 1;
+    if (bulan < 10) bulan = "0" + bulan;
+
+    let tahun = tgl.getFullYear();
+
+    console.log("tgl => " + tahun + "-" + bulan + "-" + hari);
+
+    return tahun + "-" + bulan + "-" + hari;
+  }
+
   waktu(time1, time2) {
     let x = time1;
     let y = time2;
@@ -60,14 +73,9 @@ class Content extends Component {
     let time = jam + "jam " + menit + "menit";
     return time;
   }
-  // const fullDate = new Date();
-  // let tgl = fullDate.getDate();
-  // let bulan = fullDate.getMonth();
-  // let tahun = fullDate.getFullYear();
-
+  handleOnSubmit(e) {}
   render() {
-    // console.log("data kereta => ", this.props.keretaR);
-    const { dataKereta, isLoading, error } = this.props.keretaR;
+    const { dataKereta } = this.props.keretaR;
 
     return (
       <div>
@@ -126,7 +134,8 @@ class Content extends Component {
                       <Form.Control
                         size="sm"
                         type="date"
-                        value={"2020-02-07"}
+                        min={this.getTgl()}
+                        value={this.getTgl()}
                       />
                     </Form.Group>
                     <Form.Group id="formGridCheckbox">
@@ -155,6 +164,11 @@ class Content extends Component {
                       type="text"
                       placeholder="Surabaya"
                     />
+                    {/* <Form.Control
+                      size="sm"
+                      type="text"
+                      placeholder="Surabaya"
+                    /> */}
                   </Form.Group>
                   {/* <div className="flex-row"> */}
 
@@ -246,7 +260,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getAlltiket: () => dispatch(getAlltiket())
+    getAlltiket: keretaR => dispatch(getAlltiket(keretaR))
   };
 };
 

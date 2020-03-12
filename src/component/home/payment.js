@@ -6,17 +6,41 @@ import "../../css/style.css";
 import { connect } from "react-redux";
 import { getPaymnent } from "../../_action/payment";
 
+import Axios from "axios";
+import { BaseUrl, headerAutorization } from "../../config/API";
+
 class Payment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // tgl: new date()
+      file: null,
+      idPayment: 0
     };
   }
 
   componentDidMount() {
     this.props.getPaymnent();
   }
+
+  imageChange = e => {
+    this.setState({ file: e.target.files[0] });
+  };
+  bayarSekarang = e => {
+    console.log("data", e.target.value);
+
+    const formData = new FormData();
+    formData.append("myImage", this.state.file);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    };
+    Axios.post(`${BaseUrl}/upload/${e.target.value}`, formData, config)
+      .then(response => {
+        alert("The file is successfully uploaded");
+      })
+      .catch(error => {});
+  };
 
   sum(data) {
     let sumHsl = 0;
@@ -64,135 +88,202 @@ class Payment extends Component {
   }
 
   render() {
-    const { dataPayment, isLoading, error } = this.props.Payment;
-
+    const { dataPayment } = this.props.Payment;
+    // let idPay = 0;
     return (
       <div>
         <Container>
           <h1>Invoce</h1>
-          <Row className="invoce-info">
-            <Col sm={7}>
-              <div className="invoce">
-                <div className="img-warning">
-                  <img src={require("../../img/warning.png")} />
-                </div>
-                <div>
-                  <p>
-                    Silakan melakukan pembayaran memalui M-Banking, E-Banking
-                    dan ATM Ke No.rek Yang Tertera.
-                  </p>
-                  <p>No.rek : 09812312312</p>
-                </div>
-              </div>
-              <br />
-              <div className="detail-payment">
-                <div>
-                  <div className="logo-tiket">E-Tiket</div>
-                </div>
-                <div className="table-detail">
-                  <Table responsive="sm">
-                    <thead>
-                      <tr>
-                        <th>No. Tanda Pengenal</th>
-                        <th>Nama Pemesan</th>
-                        <th>No. Handphone</th>
-                        <th>Email</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {dataPayment.length > 0 ? (
-                        <tr>
-                          <td>9812389812398</td>
-                          <td>{dataPayment[0].user.name}</td>
-                          <td>{dataPayment[0].user.phone}</td>
-                          <td>{dataPayment[0].user.email}</td>
-                        </tr>
-                      ) : null}
-                    </tbody>
-                  </Table>
-                </div>
-              </div>
-              <br />
-              <div className="rincian-payment">
-                <div>
-                  <h4>Rincian Harga</h4>
-                </div>
-                <div className="rincian">
-                  {dataPayment.length > 0
-                    ? dataPayment.map((data, index) =>
-                        data.payment.status === "Pending" ? (
-                          <Row>
-                            <Col sm={7}>{data.keretum.name_train} x1</Col>
-                            <Col sm={5}>{data.keretum.typekeretum.name}</Col>
-                          </Row>
-                        ) : null
-                      )
-                    : null}
+          <Row>
+            <Col className="invoce-info">
+              <Row>
+                {/* LEft */}
+                <Col sm={7}>
+                  {/* DIV PERTAMA */}
+                  <Row className="invoce">
+                    <Col>
+                      <div className="img-warning">
+                        <img src={require("../../img/warning.png")} alt="pic" />
+                      </div>
+                      <div>
+                        <p>
+                          Silakan melakukan pembayaran memalui M-Banking,
+                          E-Banking dan ATM Ke No.rek Yang Tertera.
+                        </p>
+                        <p>No.rek : 09812312312</p>
+                      </div>
+                    </Col>
+                  </Row>
                   <br />
-                  <div className="bg-total">
-                    <Row>
-                      <Col sm={6}>
-                        <b>
-                          <h4>Total</h4>
-                        </b>
-                      </Col>
-                      <Col sm={6}>
-                        <b>{"Rp. " + this.sum(dataPayment).toLocaleString()}</b>
-                      </Col>
-                    </Row>
-                    <MdlInfo />
-                  </div>
-                </div>
-                <div className="rincian-bukti">
-                  <div className="bukti-transfer">
-                    <img src={require("../../img/foto.png")} />
-                  </div>
-                </div>
-              </div>
-            </Col>
-            <Col sm={5}>
-              {dataPayment.map((data, index) =>
-                data.payment.status === "Pending" ? (
-                  <Row className="h-tiket">
-                    <div className="row1">
-                      <div className="col-tgl">
-                        <h3>Kereta Api</h3>
-                        <p>{this.tgl()}</p>
-                      </div>
-                      <div className="col-inv">
-                        <div className="barcode">
-                          <img src={require("../../img/barcode.png")} />
-                          <figcaption>{data.no_invoice}</figcaption>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row2">
-                      <h3>{data.keretum.name_train}</h3>
-                      <p>{data.keretum.typekeretum.name}</p>
-                    </div>
-                    <div className="row3">
+                  <Row className="detail-payment">
+                    <Col>
                       <Row>
-                        <Col sm={1}></Col>
-                        <Col sm={5}>
-                          <h4>{data.keretum.startTime}</h4>
-                          <p>{this.tgl()}</p>
-                          <br />
-                          <h4>{data.keretum.arivalTime}</h4>
-                          <p>{this.tgl()}</p>
-                        </Col>
-                        <Col sm={6}>
-                          <h4>{data.keretum.startStation}</h4>
-                          <br />
-                          <h4>{data.keretum.destinationStation}</h4>
+                        <Col>
+                          <div className="logo-tiket">E-Tiket</div>
                         </Col>
                       </Row>
-                    </div>
+                      <Row>
+                        <Col>
+                          <br />
+                          <Table responsive="false">
+                            <thead>
+                              <tr>
+                                <th>No. Tanda Pengenal</th>
+                                <th>Nama Pemesan</th>
+                                <th>No. Handphone</th>
+                                <th>Email</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {dataPayment.length !== 0 ? (
+                                <tr>
+                                  <td>9812389812398</td>
+                                  <td>{dataPayment[0].user.name}</td>
+                                  <td>{dataPayment[0].user.phone}</td>
+                                  <td>{dataPayment[0].user.email}</td>
+                                </tr>
+                              ) : null}
+                            </tbody>
+                          </Table>
+                        </Col>
+                      </Row>
+                    </Col>
                   </Row>
-                ) : null
-              )}
+
+                  {/* DIV KETIGA */}
+                  <br />
+                  <div className="rincian-payment">
+                    <Row>
+                      <Col>
+                        <h3>Rincian Harga</h3>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <Row>
+                          <Col sm={8} className="rincian">
+                            <Row>
+                              <Col>
+                                {dataPayment.map((data, index) => (
+                                  <Row>
+                                    <Col sm={7}>
+                                      {data.keretum.name_train}(
+                                      {data.keretum.typekeretum.name}) X1
+                                    </Col>
+                                    <Col sm={5} style={{ textAlign: "right" }}>
+                                      {data.payment.totalPrice.toLocaleString()}
+                                    </Col>
+                                  </Row>
+                                ))}
+                              </Col>
+                            </Row>
+                            <br />
+                            <Row>
+                              <Col>
+                                <Row style={{ backgroundColor: "#cac1c1" }}>
+                                  <Col>Total</Col>
+                                  <Col
+                                    style={{
+                                      textAlign: "right",
+                                      paddingRight: 15
+                                    }}
+                                  >
+                                    RP. &nbsp;
+                                    {dataPayment
+                                      ? this.sum(dataPayment).toLocaleString()
+                                      : 0}
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                style={{ textAlign: "right", paddingTop: 10 }}
+                              >
+                                {dataPayment.length !== 0 ? (
+                                  <button
+                                    onClick={this.bayarSekarang}
+                                    className="btn-tiket"
+                                    value={dataPayment[0].id_payment}
+                                  >
+                                    Bayar Sekarang
+                                  </button>
+                                ) : null}
+                              </Col>
+                            </Row>
+                          </Col>
+                          <Col sm={4}>
+                            <Row>
+                              <Col></Col>
+                            </Row>
+                            <Row>
+                              <Col>
+                                <input
+                                  type="file"
+                                  name="myImage"
+                                  accept="image/*"
+                                  onChange={this.imageChange}
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </div>
+                </Col>
+                {/* Right */}
+                <Col sm={5}></Col>
+              </Row>
             </Col>
           </Row>
         </Container>
+
+        {/* <Col sm={5}>
+                    {dataPayment.map((data, index) =>
+                      data.payment.status === "Pending" ? (
+                        <Row className="h-tiket">
+                          <div className="row1">
+                            <div className="col-tgl">
+                              <h3>Kereta Api</h3>
+                              <p>{this.tgl()}</p>
+                            </div>
+                            <div className="col-inv">
+                              <div className="barcode">
+                                <img
+                                  src={require("../../img/barcode.png")}
+                                  alt="pic"
+                                />
+                                <figcaption>{data.no_invoice}</figcaption>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row2">
+                            <h3>{data.keretum.name_train}</h3>
+                            <p>{data.keretum.typekeretum.name}</p>
+                          </div>
+                          <div className="row3">
+                            <Row>
+                              <Col sm={1}></Col>
+                              <Col sm={5}>
+                                <h4>{data.keretum.startTime}</h4>
+                                <p>{this.tgl()}</p>
+                                <br />
+                                <h4>{data.keretum.arivalTime}</h4>
+                                <p>{this.tgl()}</p>
+                              </Col>
+                              <Col sm={6}>
+                                <h4>{data.keretum.startStation}</h4>
+                                <br />
+                                <h4>{data.keretum.destinationStation}</h4>
+                              </Col>
+                            </Row>
+                          </div>
+                        </Row>
+                      ) : null
+                    )}
+                  </Col>
+                 */}
       </div>
     );
   }

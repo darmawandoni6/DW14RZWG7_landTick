@@ -45,15 +45,13 @@ class Transaksi extends Component {
           price: this.state.price,
           qty: this.state.qty
         };
-        console.log(`${BaseUrl}/addTiket`);
-        console.log(data);
-        const insert = await axios({
+        await axios({
           method: "POST",
           url: `${BaseUrl}/addTiket`,
           headers: headerAutorization,
           data
         });
-        console.log(insert);
+        window.location.href = "http://localhost:3000/admin";
       }
     } catch (error) {
       console.log(error.message);
@@ -65,15 +63,15 @@ class Transaksi extends Component {
     let msg = "";
     let returnData = false;
     if (
-      this.state.name_train == "" ||
-      this.state.dateStart == "" ||
-      this.state.startStation == "" ||
-      this.state.startTime == "" ||
-      this.state.destinationStation == "" ||
-      this.state.arivalTime == "" ||
-      this.state.id_type == 0 ||
-      this.state.price <= 0 ||
-      this.state.qty <= 0
+      this.state.name_train === "" ||
+      this.state.dateStart === "" ||
+      this.state.startStation === "" ||
+      this.state.startTime === "" ||
+      this.state.destinationStation === "" ||
+      this.state.arivalTime === "" ||
+      this.state.id_type === 0 ||
+      this.state.price < 0 ||
+      this.state.qty < 0
     ) {
       msg = "Data harus disi semua";
       this.setState({
@@ -91,7 +89,7 @@ class Transaksi extends Component {
     return returnData;
   }
   change = e => {
-    if (e.target.name == "price" || e.target.name == "qty") {
+    if (e.target.name === "price" || e.target.name === "qty") {
       if (e.target.value < 0) {
         this.setState({
           [e.target.name]: 0
@@ -108,7 +106,7 @@ class Transaksi extends Component {
     }
   };
   render() {
-    const { dataType, isLoading, error } = this.props.dataType;
+    const { dataType } = this.props.dataType;
     // console.log("type => ", dataType);
     return (
       <div>
@@ -233,7 +231,7 @@ class Transaksi extends Component {
         <br />
         <br />
         <div className="footer">
-          <h1>Doni Darmawan</h1>
+          <p>Copyright©Doni darmawan</p>
         </div>
       </div>
     );

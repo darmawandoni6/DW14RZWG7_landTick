@@ -20,7 +20,8 @@
     "react-scripts": "3.3.1",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
-    "redux-promise-middleware": "^6.1.2"
+    "redux-promise-middleware": "^6.1.2",
+    "suggestion-react-input-search": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

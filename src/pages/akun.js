@@ -5,8 +5,7 @@ import Mytiket from "../component/home/myTiket";
 import Payment from "../component/home/payment";
 import "../css/style.css";
 import { Link } from "react-router-dom";
-// import Axios from "axios";
-// import { BaseUrl, headerAutorization } from "../config/API";
+
 import { connect } from "react-redux";
 import { cekUser } from "../_action/user";
 
@@ -28,13 +27,13 @@ class Akun extends Component {
   };
 
   render() {
-    const { dataUser, isLoading, error } = this.props.dataUser;
+    const { dataUser, error } = this.props.dataUser;
     // console.log("data user => ", dataUser.length);
 
     if (error) {
       window.location.href = "http://localhost:3000/";
     }
-    if (dataUser.length != 0) {
+    if (dataUser.length !== 0) {
       if (dataUser.status) {
         window.location.href = "http://localhost:3000/admin";
       }
@@ -44,13 +43,15 @@ class Akun extends Component {
       <div>
         <nav className="navbar navbar-expand-lg navbar-light bg-light bg-shadow">
           <Container>
-            <a className="navbar-brand" href="#">
-              <h1 className="clr">E-Tiket</h1>
-            </a>
+            <div className="navbar-brand">
+              <Link to="/beranda">
+                <h1 className="clr">E-Tiket</h1>
+              </Link>
+            </div>
             <form className="form-inline my-2 my-lg-0">
               <div className="dropdown">
                 <div className="bulet ">
-                  <Link to="/beranda">{dataUser.name}&nbsp;</Link>
+                  {dataUser.name}&nbsp;
                   <FontAwesomeIcon icon={faUser} />
                 </div>
                 <div className="childDrop">

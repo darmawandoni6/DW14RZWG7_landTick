@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { Button, Modal, Row, Col } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { signIn } from "../../_action/user";
 import { BaseUrl, headerAutorization } from "../../config/API";
 import Axios from "axios";
 
@@ -51,23 +48,21 @@ class BuyTiket extends Component {
         no_invoice: result.data.data.name + result.data.data.number,
         id_tiket: this.state.data.data.id
       };
-
-      const result2 = await Axios({
+      console.log(reqData);
+      await Axios({
         method: "POST",
         url: `${BaseUrl}/order/`,
         headers: headerAutorization,
         data: reqData
       });
-
-      const snUpdate = {
-        number: result.data.data.number + 1
-      };
-      const result3 = await Axios({
-        method: "GET",
+      const data = { number: result.data.data.number + 1 };
+      await Axios({
+        method: "PATCH",
         url: `${BaseUrl}/sn/INV`,
         headers: headerAutorization,
-        data: snUpdate
+        data
       });
+      window.location.href = "http://localhost:3000/mytiket";
     } catch (error) {
       console.log(error.message);
     }
@@ -186,17 +181,4 @@ class BuyTiket extends Component {
     );
   }
 }
-// const mapStateToProps = state => {
-//   return {
-//     user: state.sigIn
-//   };
-// };
-
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     userSign1: user => dispatch(signIn(user))
-//   };
-// };
-
 export default BuyTiket;
-// export default connect(mapStateToProps, mapDispatchToProps)(MdlLogin);

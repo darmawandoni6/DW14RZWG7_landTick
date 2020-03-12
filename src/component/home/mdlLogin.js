@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button, Modal, Row, Form } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { signIn } from "../../_action/user";
 
@@ -36,7 +36,7 @@ class MdlLogin extends Component {
 
   render() {
     const { msg, token, status } = this.props.user.dataUser;
-    const { dataUser, isLoading, error } = this.props.user;
+    const { dataUser, error } = this.props.user;
     if (msg === "success") {
       localStorage.setItem("token", token);
       if (status) window.location.href = "http://localhost:3000/admin";
@@ -91,7 +91,9 @@ class MdlLogin extends Component {
                     {this.state.message}
                   </div>
                 </Form.Group>
-                <Form.Label>Belum Punya Akun ? Klik disini</Form.Label>
+                <Form.Label>
+                  Belum Punya Akun ? <Link>Klik disini</Link>
+                </Form.Label>
                 <br />
                 <Button variant="primary" type="submit">
                   Login
